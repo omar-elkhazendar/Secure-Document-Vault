@@ -1,3 +1,4 @@
 <?php
-phpinfo();
+// Test file for development purposes
+echo "Test file working";
 ?> 
