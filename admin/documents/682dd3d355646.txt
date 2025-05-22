@@ -1,0 +1,80 @@
+--------------------------------------Routers and L3-SW and L2-SW Basic COnfiguration --------------------------------------------------
+en
+conf t 
+hostname L3-SW
+banner motd # This is the L3-SW #
+line console 0
+password cisco
+login
+exit
+ip domain-name cisco.net
+username cisco password cisco
+crypto key generate rsa
+1024
+line vty 0 15 
+password cisco
+login local 
+transport input ssh
+exit
+no ip domain-lookup
+enable password cisco 
+service password-encryption
+do wr
+--------------------------------------ACCESS AND TRUNK PORTS AND VLANS NAMES ON L2-SW Configuration --------------------------------------------------
+conf t
+vlan 70
+name DATA
+ex
+vlan 120
+name VOICE
+interface range fastEthernet 0/1-2
+switchport mode trunk 
+ex
+interface range fastEthernet 0/3-24
+switchport mode access
+switchport access vlan 70
+switchport voice vlan 120
+do wr
+--------------------------------------L3-SW TRUNK PORTS and VLANS  COnfiguration --------------------------------------------------
+interface range gigabitEthernet 1/0/2-6
+switchport mode trunk
+interface gigabitEthernet 0/8
+switchport mode trunk
+vlan 10 
+name HR
+vlan 20 
+name CS
+vlan 30 
+name MK
+vlan 40 
+name LM
+vlan 50 
+name IT
+vlan 60 
+name Guest
+vlan 70 
+name Finance
+vlan 120
+name VOICE
+--------------------------------------L2-SW Port SEcurity Configuration on the Servers Switch --------------------------------------------------
+interface range fastEthernet 0/2-5
+switchport mode access 
+switchport port-security
+switchport port-security maximum 1
+switchport port-security mac-address sticky
+switchport port-security violation shutdown 
+do wr 
+ex
+interface range fastEthernet 0/6-24, gigabitEthernet 0/1-2
+switchport mode access
+switchport access vlan 99
+shutdown
+do wr
+--------------------------------------VOICE Router COnfiguration --------------------------------------------------
+interface GigabitEthernet0/0.120
+encapsulation dot1Q 120
+ip address 10.10.10.1 255.255.255.0
+ex
+do wr
+
+
